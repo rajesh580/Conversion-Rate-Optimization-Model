@@ -4,7 +4,6 @@ This is a Flask-based web application that uses machine learning to predict whet
 
 A unique feature of this project is the client-side implementation of the trained models in JavaScript, allowing for real-time predictions and feature-contribution analysis without needing to call the backend for every input change.
 
-![Project Screenshot](https://i.imgur.com/sK8aH8r.png)
 
 ## 🚀 Features
 
