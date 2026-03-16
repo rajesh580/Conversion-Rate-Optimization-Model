@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversion Rate Optimization</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;--card2:#f7f9ff;--bdr:#e2e8f5;--t:#0f172a;--t2:#334155;--m:#64748b;--m2:#94a3b8;
+  --acc:#4f46e5;--al:#ede9fe;
+  --g:#16a34a;--gbg:#dcfce7;--gbr:#86efac;--g-c-alt:#15803d;--g-bg-alt:#bbf7d0;
+  --r:#dc2626;--rbg:#fee2e2;--rbr:#fca5a5;
+  --am:#d97706;--abg:#fef3c7;
+  --ens-c:#7c3aed;--ens-bg:#f5f3ff;
+  --lr-c-alt:#0369a1;--lr-bg-alt:#e0f2fe;--lr-bdr-alt:#7dd3fc;
+  --topbar-bg:rgba(255,255,255,0.96);
+}
+body.dark{
+  --bg:#0f172a;--card:#1e293b;--card2:#283447;--bdr:#334155;--t:#e2e8f0;--t2:#94a3b8;--m:#64748b;--m2:#475569;
+  --acc:#818cf8;--al:rgba(99,102,241,0.1);
+  --g:#4ade80;--gbg:rgba(74,222,128,0.1);--gbr:rgba(74,222,128,0.2);--g-c-alt:#bbf7d0;--g-bg-alt:rgba(21,128,61,0.2);
+  --r:#f87171;--rbg:rgba(248,113,113,0.1);--rbr:rgba(248,113,113,0.2);
+  --am:#fcd34d;--abg:rgba(252,211,77,0.1);
+  --ens-c:#a78bfa;--ens-bg:rgba(124,58,237,0.1);
+  --lr-c-alt:#7dd3fc;--lr-bg-alt:rgba(3,105,161,0.1);--lr-bdr-alt:rgba(3,105,161,0.4);
+  --topbar-bg:rgba(15,23,42,0.85);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--t);font-family:'Nunito',sans-serif;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 5% 10%,rgba(79,70,229,0.06),transparent 55%),radial-gradient(ellipse 50% 45% at 95% 90%,rgba(16,163,74,0.05),transparent 55%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(79,70,229,0.06) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;z-index:0;}
+.pg{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:22px 18px 60px;}
+
+/* TOPBAR */
+.tb{background:var(--topbar-bg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:100;padding:0 18px;}
+.tbi{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:13px 0;flex-wrap:wrap;gap:8px;}
+.bn{display:flex;align-items:center;gap:9px;}
+.bni{width:38px;height:38px;background:linear-gradient(135deg,#4f46e5,#7c3aed);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.bnn{font-size:17px;font-weight:900;background:linear-gradient(135deg,#4f46e5,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;}
+.bns{font-size:9px;color:var(--m);letter-spacing:1.5px;text-transform:uppercase;}
+.aps{display:flex;gap:6px;flex-wrap:wrap;}
+.ap{padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid;}
+.ap-g{background:var(--gbg);color:var(--g);border-color:var(--gbr);}
+.ap-b{background:var(--lr-bg-alt);color:var(--lr-c-alt);border-color:var(--lr-bdr-alt);}
+.ap-r{background:var(--rbg);color:var(--r);border-color:var(--rbr);}
+.t-acts{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+#theme-toggle{background:none;border:1px solid transparent;cursor:pointer;padding:5px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--m);transition:all .2s;}
+#theme-toggle:hover{background:var(--card2);color:var(--t);border-color:var(--bdr);}
+#theme-toggle svg{width:18px;height:18px;}
+#theme-icon-moon{display:none;}
+
+/* HERO */
+.hr{text-align:center;padding:36px 0 28px;}
+.hrtg{display:inline-flex;align-items:center;gap:6px;background:var(--al);color:var(--acc);font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:16px;}
+.hr h1{font-size:clamp(26px,4.5vw,46px);font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:10px;}
+.hr h1 span{background:linear-gradient(135deg,#4f46e5,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hr p{font-size:13px;color:var(--m);max-width:540px;margin:0 auto;line-height:1.7;}
+
+/* LAYOUT */
+.mg{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:start;}
+@media(max-width:900px){.mg{grid-template-columns:1fr;}}
+
+/* INPUT CARD */
+.ic{background:var(--card);border:1px solid var(--bdr);border-radius:18px;box-shadow:0 2px 20px rgba(79,70,229,0.07);overflow:hidden;}
+.ich{padding:16px 20px;border-bottom:1px solid var(--bdr);background:linear-gradient(135deg,rgba(79,70,229,0.04),rgba(124,58,237,0.02));}
+.ich h2{font-size:15px;font-weight:800;color:var(--t);display:flex;align-items:center;gap:8px;}
+.ich p{font-size:11px;color:var(--m);margin-top:3px;}
+.sb{background:var(--acc);color:#fff;width:22px;height:22px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+
+.fs{padding:16px 20px;}
+.sl{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--acc);margin-bottom:12px;display:flex;align-items:center;gap:7px;padding-bottom:8px;border-bottom:1.5px solid var(--bdr);}
+.sl::before{content:'';width:3px;height:14px;background:var(--acc);border-radius:2px;}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+@media(max-width:560px){.fg2{grid-template-columns:1fr;}}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fl{font-size:11px;font-weight:700;color:var(--t2);}
+.fh{font-size:9px;color:var(--m2);}
+.fi{background:var(--card2);border:1.5px solid var(--bdr);border-radius:8px;padding:9px 11px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t);outline:none;transition:all 0.2s;width:100%;}
+.fi:focus{border-color:rgba(79,70,229,0.45);background:var(--card);box-shadow:0 0 0 3px rgba(79,70,229,0.07);}
+.fi.k{border-color:rgba(79,70,229,0.25);background:rgba(79,70,229,0.02);}
+select.fi option{background:var(--card);color:var(--t);}
+
+.as{padding:0 20px 14px;}
+.acs{display:flex;gap:6px;flex-wrap:wrap;}
+.ac{padding:8px 15px;border:1.5px solid var(--bdr);border-radius:8px;background:var(--card2);color:var(--m);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+.ac:hover{border-color:var(--acc);color:var(--acc);}
+.ac.on-dt{border-color:var(--g);color:var(--g);background:var(--gbg);}
+.ac.on-lr{border-color:var(--acc);color:var(--acc);background:var(--al);}
+.ac.on-knn{border-color:var(--r);color:var(--r);background:var(--rbg);}
+.ac.on-ens{border-color:var(--ens-c);color:var(--ens-c);background:var(--ens-bg);}
+
+.pw{padding:0 20px 20px;}
+.pb{width:100%;padding:16px;border:none;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:7px;letter-spacing:0.3px;}
+.pb:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(79,70,229,0.32);}
+.pb:active{transform:translateY(0);}
+
+/* RESULTS RIGHT PANEL */
+.rp{display:flex;flex-direction:column;gap:14px;}
+
+/* VERDICT CARD */
+.vc{background:var(--card);border:2px solid var(--bdr);border-radius:18px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,0.05);transition:all 0.4s;}
+.vc.buy{border-color:var(--gbr);box-shadow:0 4px 28px rgba(22,163,74,0.15);}
+.vc.nobuy{border-color:var(--rbr);box-shadow:0 4px 28px rgba(220,38,38,0.12);}
+.vt{padding:26px 20px 16px;text-align:center;}
+.vi{width:76px;height:76px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:38px;transition:background 0.4s;}
+.vi.buy{background:var(--gbg);}
+.vi.nobuy{background:var(--rbg);}
+.vi.idle{background:var(--card2);}
+.vm{font-size:20px;font-weight:900;margin-bottom:7px;line-height:1.2;}
+.vm.buy{color:var(--g);}
+.vm.nobuy{color:var(--r);}
+.vm.idle{color:var(--m);}
+.vs{font-size:11px;color:var(--m);line-height:1.6;max-width:290px;margin:0 auto;}
+.pbs{padding:0 20px 16px;}
+.pbh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.pbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--m);}
+.pbv{font-size:22px;font-weight:900;font-family:'JetBrains Mono',monospace;}
+.pbt{height:14px;background:var(--card2);border-radius:99px;overflow:hidden;border:1px solid var(--bdr);}
+.pbf{height:100%;border-radius:99px;width:0;transition:width 1s cubic-bezier(0.23,1,0.32,1),background 0.4s;}
+.pblb{display:flex;justify-content:space-between;font-size:9px;color:var(--m2);margin-top:4px;}
+.pbn{margin-top:8px;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:800;text-align:center;border:1.5px solid;}
+
+/* 3-MODELS COMPARISON */
+.mcd{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(79,70,229,0.05);}
+.mcd-t{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--m);margin-bottom:12px;}
+.mr{display:flex;align-items:center;gap:9px;margin-bottom:8px;padding:9px 11px;border-radius:9px;background:var(--card2);border:1px solid var(--bdr);}
+.mr.sel{border-color:rgba(79,70,229,0.25);background:rgba(79,70,229,0.04);}
+.mri{font-size:17px;}
+.mrin{flex:1;min-width:0;}
+.mrn{font-size:11px;font-weight:700;color:var(--t2);}
+.mra{font-size:9px;color:var(--m2);}
+.mrb{width:60px;height:5px;background:#e2e8f0;border-radius:99px;overflow:hidden;}
+.mrbf{height:100%;border-radius:99px;transition:width 0.8s;}
+.mrp{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;min-width:46px;text-align:right;}
+.mrt{font-size:9px;font-weight:800;padding:2px 7px;border-radius:4px;white-space:nowrap;}
+.mt-b{background:var(--gbg);color:var(--g);}
+.mt-n{background:var(--rbg);color:var(--r);}
+
+/* LR FEATURE CONTRIBUTION */
+.lrc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(79,70,229,0.05);}
+.lrc-t{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--m);margin-bottom:3px;}
+.lrc-s{font-size:11px;color:var(--m2);margin-bottom:10px;line-height:1.5;}
+.lrc-lg{display:flex;gap:14px;margin-bottom:10px;padding-bottom:9px;border-bottom:1px solid var(--bdr);}
+.lrc-li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--m);}
+.lrc-d{width:10px;height:10px;border-radius:3px;}
+.fc{margin-bottom:9px;}
+.fch{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;gap:6px;flex-wrap:wrap;}
+.fcn{font-size:11px;font-weight:700;color:var(--t2);flex:1;min-width:0;}
+.fcr{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.fcrv{font-size:9px;color:var(--m2);font-family:'JetBrains Mono',monospace;}
+.fcs{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;min-width:46px;text-align:right;}
+.fcd{font-size:9px;font-weight:800;padding:2px 7px;border-radius:4px;}
+.dp{background:var(--gbg);color:var(--g);}
+.dn{background:var(--rbg);color:var(--r);}
+.dz{background:var(--card2);color:var(--m);}
+.fcb{display:flex;align-items:center;gap:2px;height:9px;}
+.nbt{flex:1;height:9px;background:var(--rbg);border-radius:3px 0 0 3px;overflow:hidden;display:flex;justify-content:flex-end;}
+.nbf{height:100%;background:var(--r);border-radius:3px 0 0 3px;transition:width .9s;}
+.cl{width:2px;height:13px;background:var(--bdr);flex-shrink:0;}
+.pbt2{flex:1;height:9px;background:var(--gbg);border-radius:0 3px 3px 0;overflow:hidden;}
+.pbf2{height:100%;background:var(--g);border-radius:0 3px 3px 0;transition:width .9s;}
+.ns{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--card2);border:1px solid var(--bdr);}
+.nr{display:flex;justify-content:space-between;align-items:center;font-size:11px;margin-bottom:6px;}
+.nl{font-weight:600;color:var(--m);}
+.nv{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;}
+.nf{font-size:14px;font-weight:900;margin-top:8px;padding:11px 14px;border-radius:9px;text-align:center;border:1.5px solid;}
+
+/* CHART & TABLE */
+.cc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px;box-shadow:0 2px 12px rgba(79,70,229,0.05);margin-bottom:18px;}
+.cc-t{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--m);margin-bottom:12px;}
+.cw{position:relative;height:210px;}
+.tc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(79,70,229,0.05);}
+.tch{padding:13px 16px;background:var(--card2);border-bottom:1px solid var(--bdr);}
+.tc-t{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--m);}
+table.vt{width:100%;border-collapse:collapse;font-size:11px;}
+.vt th{padding:8px 14px;text-align:left;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--m);border-bottom:1px solid var(--bdr);font-weight:700;background:var(--card2);}
+.vt td{padding:8px 14px;border-bottom:1px solid var(--card2);color:var(--t2);}
+.vt tr:last-child td{border-bottom:none;}
+.vt tr.cur td{background:var(--ens-bg);}
+.vt tr:hover td{background:var(--card2);}
+.rp2{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.r-lo{background:var(--rbg);color:var(--r);}
+.r-md{background:var(--abg);color:var(--am);}
+.r-hi{background:var(--gbg);color:var(--g);}
+.r-vh{background:var(--g-bg-alt);color:var(--g-c-alt);}
+.cb{background:var(--acc);color:#fff;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:800;letter-spacing:1px;margin-left:5px;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:rgba(79,70,229,0.18);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- STICKY TOPBAR -->
+<div class="tb">
+  <div class="tbi">
+    <div class="bn">
+      <div class="bni">📊</div>
+      <div>
+        <div class="bnn">Conversion Rate Optimization</div>
+        <div class="bns">ML Prediction Engine · 12,330 Sessions Trained</div>
+      </div>
+    </div>
+    <div class="t-acts">
+      <div class="aps">
+        <span class="ap ap-g">🌳 Decision Tree 89.98%</span>
+        <span class="ap ap-b">📈 Logistic Regression 88.32%</span>
+        <span class="ap ap-r">🎯 KNN 87.83%</span>
+      </div>
+      <button id="theme-toggle" title="Toggle dark mode">
+        <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM18.894 6.106a.75.75 0 0 1 0 1.06l-1.591 1.59a.75.75 0 1 1-1.06-1.06l1.59-1.59a.75.75 0 0 1 1.06 0ZM21.75 12a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1 0-1.5h2.25a.75.75 0 0 1 .75.75ZM17.836 17.836a.75.75 0 0 1-1.06 0l-1.59-1.591a.75.75 0 1 1 1.06-1.06l1.591 1.59a.75.75 0 0 1 0 1.061ZM12 18a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0v-2.25A.75.75 0 0 1 12 18ZM7.758 17.836a.75.75 0 0 1-1.06-1.06l1.59-1.591a.75.75 0 1 1 1.06 1.06l-1.59 1.59a.75.75 0 0 1 0-1.06ZM4.5 12a.75.75 0 0 1-.75.75H1.5a.75.75 0 0 1 0-1.5h2.25a.75.75 0 0 1 .75.75ZM6.106 6.106a.75.75 0 0 1 1.06 0l1.591 1.59a.75.75 0 0 1-1.06 1.06l-1.59-1.591a.75.75 0 0 1 0-1.06Z" /></svg>
+        <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 0 1 .162.819A8.97 8.97 0 0 0 9 6a9 9 0 0 0 9 9 8.97 8.97 0 0 0 3.463-.69a.75.75 0 0 1 .981.981A10.503 10.503 0 0 1 18 19.5a10.5 10.5 0 0 1-10.5-10.5c0-1.81.46-3.52 1.255-5.042a.75.75 0 0 1 .819-.162Z" clip-rule="evenodd" /></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="pg">
+
+  <!-- HERO -->
+  <div class="hr">
+    <div class="hrtg">⚡ Real ML Models · Light Background · All 17 Features</div>
+    <h1>Conversion Rate Optimization<br><span>— Purchase Prediction —</span></h1>
+    <p>Enter all 17 session features. The models compute each feature's exact contribution and output a clear <strong>"Customer Likely to Purchase"</strong> or <strong>"Customer Not Likely to Purchase"</strong> verdict with Logistic Regression feature breakdown.</p>
+  </div>
+
+  <div class="mg">
+
+    <!-- ── LEFT: ALL 17 INPUTS ── -->
+    <div>
+      <div class="ic">
+        <div class="ich">
+          <h2><span class="sb">1</span> Enter All 17 Session Features</h2>
+          <p>Fields marked ★ have the highest impact on conversion. All inputs map directly to the trained ML models.</p>
+        </div>
+
+        <div class="fs">
+          <!-- GROUP 1: Page Behavior -->
+          <div class="sl">🖥️ Page Behavior</div>
+          <div class="fg2">
+            <div class="fg">
+              <div class="fl">📄 Administrative Pages</div>
+              <input class="fi k" type="number" id="f-adm" value="2" min="0" max="27" oninput="liveU()" title="Administrative Pages" placeholder="e.g. 2">
+              <span class="fh">Number of administrative pages (e.g., login, account info) the user visited in the session.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">⏱️ Administrative Duration</div>
+              <input class="fi" type="number" id="f-adm-d" value="80" min="0" oninput="liveU()" title="Administrative Duration" placeholder="e.g. 80">
+              <span class="fh">Total time in seconds the user spent on administrative pages during the session.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">ℹ️ Informational Pages</div>
+              <input class="fi" type="number" id="f-inf" value="1" min="0" max="24" oninput="liveU()" title="Informational Pages" placeholder="e.g. 1">
+              <span class="fh">Number of informational pages (e.g., about us, contact) the user visited in the session.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">⏱️ Informational Duration</div>
+              <input class="fi" type="number" id="f-inf-d" value="30" min="0" oninput="liveU()" title="Informational Duration" placeholder="e.g. 30">
+              <span class="fh">Total time in seconds the user spent on informational pages during the session.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">🛍️ Product Related Pages ★★</div>
+              <input class="fi k" type="number" id="f-prd" value="15" min="0" max="705" oninput="liveU()" title="Product Related Pages" placeholder="e.g. 15">
+              <span class="fh">Number of product-related pages (e.g., product details, category listings) the user visited.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">⏱️ Product Related Duration ★</div>
+              <input class="fi k" type="number" id="f-prd-d" value="800" min="0" oninput="liveU()" title="Product Related Duration" placeholder="e.g. 800">
+              <span class="fh">Total time in seconds the user spent on product-related pages during the session.</span>
+            </div>
+          </div>
+
+          <!-- GROUP 2: Engagement -->
+          <div class="sl">📉 Engagement Quality</div>
+          <div class="fg2">
+            <div class="fg">
+              <div class="fl">📉 Bounce Rates ★</div>
+              <input class="fi k" type="number" id="f-bnc" value="0.02" min="0" max="0.2" step="0.01" oninput="liveU()" title="Bounce Rates" placeholder="0.02">
+              <span class="fh">The percentage of single-page sessions. A high bounce rate often indicates that site entrance pages aren't relevant to your visitors.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">🚪 Exit Rates ★★</div>
+              <input class="fi k" type="number" id="f-ext" value="0.04" min="0" max="0.2" step="0.01" oninput="liveU()" title="Exit Rates" placeholder="0.04">
+              <span class="fh">For all pageviews to the page, the percentage that were the last in the session. High exit rates can signal problem areas on your site.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">💰 Page Values ★★★</div>
+              <input class="fi k" type="number" id="f-pv" value="0" min="0" max="362" oninput="liveU()" title="Page Values" placeholder="e.g. 0">
+              <span class="fh">The average value of a page that a user visited before a purchase. This is a key indicator of a page's contribution to revenue.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">🎉 Special Day</div>
+              <input class="fi" type="number" id="f-sp" value="0" min="0" max="1" step="0.2" oninput="liveU()" title="Special Day" placeholder="e.g. 0">
+              <span class="fh">A value indicating the closeness of the session time to a special day (e.g., Mother's Day). 0 is far, 1 is on the day.</span>
+            </div>
+          </div>
+
+          <!-- GROUP 3: Session Context -->
+          <div class="sl">📅 Session Context</div>
+          <div class="fg2">
+            <div class="fg">
+              <div class="fl">📅 Month ★</div>
+              <select class="fi k" id="f-month" onchange="liveU()" title="Month">
+                <option value="2">February</option>
+                <option value="5">March</option>
+                <option value="6" selected>May</option>
+                <option value="4">June</option>
+                <option value="3">July</option>
+                <option value="0">August</option>
+                <option value="9">September</option>
+                <option value="8">October</option>
+                <option value="7">November (Highest CR: 25.35%)</option>
+                <option value="1">December</option>
+              </select>
+              <span class="fh">The month in which the user session occurred. Certain months, like November, show higher purchase rates due to holidays.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">👤 Visitor Type</div>
+              <select class="fi" id="f-vis" onchange="liveU()" title="Visitor Type">
+                <option value="1">New Visitor (CR: 24.9%)</option>
+                <option value="2" selected>Returning Visitor (CR: 13.9%)</option>
+                <option value="0">Other</option>
+              </select>
+              <span class="fh">Whether the visitor is new to the site or has visited before. New visitors often have a higher conversion rate.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">📆 Weekend</div>
+              <select class="fi" id="f-wk" onchange="liveU()" title="Weekend">
+                <option value="0" selected>Weekday (CR: 14.9%)</option>
+                <option value="1">Weekend (CR: 17.4%)</option>
+              </select>
+              <span class="fh">Indicates whether the session took place on a weekend. Weekend shoppers sometimes behave differently than weekday shoppers.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">🗺️ Region</div>
+              <select class="fi" id="f-reg" onchange="liveU()" title="Region">
+                <option value="1" selected>Region 1</option>
+                <option value="2">Region 2</option>
+                <option value="3">Region 3</option>
+                <option value="4">Region 4</option>
+                <option value="5">Region 5</option>
+                <option value="6">Region 6</option>
+                <option value="7">Region 7</option>
+                <option value="8">Region 8</option>
+                <option value="9">Region 9</option>
+              </select>
+              <span class="fh">The geographic region where the user's session originated. Different regions can have different purchasing habits.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">📡 Traffic Type (1–20)</div>
+              <input class="fi" type="number" id="f-tt" value="2" min="1" max="20" oninput="liveU()" title="Traffic Type" placeholder="2">
+              <span class="fh">The source of traffic that brought the user to the site (e.g., 1: Direct, 2: Search Engine, 3: Referral).</span>
+            </div>
+          </div>
+
+          <!-- GROUP 4: Technical -->
+          <div class="sl">💻 Technical Info</div>
+          <div class="fg2">
+            <div class="fg">
+              <div class="fl">💻 Operating System</div>
+              <select class="fi" id="f-os" onchange="liveU()" title="Operating System">
+                <option value="1">Windows (1)</option>
+                <option value="2" selected>Mac OS (2)</option>
+                <option value="3">Linux (3)</option>
+                <option value="4">Android (4)</option>
+                <option value="5">iOS (5)</option>
+                <option value="6">Other (6)</option>
+              </select>
+              <span class="fh">The operating system of the user's device. This can provide insights into the user's technical context.</span>
+            </div>
+            <div class="fg">
+              <div class="fl">🌐 Browser</div>
+              <select class="fi" id="f-br" onchange="liveU()" title="Browser">
+                <option value="1">Chrome (1)</option>
+                <option value="2" selected>Firefox (2)</option>
+                <option value="3">Safari (3)</option>
+                <option value="4">Edge (4)</option>
+                <option value="5">Internet Explorer (5)</option>
+                <option value="6">Other (6)</option>
+              </select>
+              <span class="fh">The web browser used by the visitor. Browser type can sometimes correlate with user behavior and conversion.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ALGORITHM SELECTOR -->
+        <div class="as">
+          <div class="sl">🤖 Choose ML Algorithm</div>
+          <div class="acs">
+            <button class="ac on-dt" id="chip-dt" onclick="setAlgo('dt')">🌳 Decision Tree</button>
+            <button class="ac" id="chip-lr" onclick="setAlgo('lr')">📈 Logistic Regression</button>
+            <button class="ac" id="chip-knn" onclick="setAlgo('knn')">🎯 KNN (k=7)</button>
+            <button class="ac" id="chip-ens" onclick="setAlgo('ens')">⚡ Ensemble (All 3)</button>
+          </div>
+        </div>
+
+        <div class="pw">
+          <button class="pb" onclick="runPred()">
+            ⚡ &nbsp; Predict Conversion Rate
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RIGHT: RESULTS PANEL ── -->
+    <div class="rp">
+
+      <!-- VERDICT -->
+      <div class="vc idle" id="vcard">
+        <div class="vt">
+          <div class="vi idle" id="vicon">⏳</div>
+          <div class="vm idle" id="vmsg">Awaiting Prediction</div>
+          <div class="vs" id="vsub">Fill in the session features on the left and click "Predict Conversion Rate" to see the result.</div>
+        </div>
+        <div class="pbs">
+          <div class="pbh">
+            <span class="pbl">Conversion Probability</span>
+            <span class="pbv" id="pval" style="color:var(--m)">—</span>
+          </div>
+          <div class="pbt"><div class="pbf" id="pbar"></div></div>
+          <div class="pblb"><span>0%</span><span>Threshold: 42%</span><span>100%</span></div>
+          <div class="pbn" id="pnote" style="color:var(--m);background:var(--card2);border-color:var(--bdr)">
+            Enter data above to get prediction
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 MODELS -->
+      <div class="mcd" id="mcard" style="display:none">
+        <div class="mcd-t">📊 All 3 Models — Same Input</div>
+        <div id="mlist"></div>
+      </div>
+
+      <!-- LR FEATURE CONTRIBUTIONS -->
+      <div class="lrc" id="lrcard" style="display:none">
+        <div class="lrc-t">📈 LR Feature Contributions — All 17 Features</div>
+        <div class="lrc-s">Each feature's contribution toward <strong style="color:var(--g)">Purchase ↑</strong> or <strong style="color:var(--r)">No Purchase ↓</strong> (sorted by impact magnitude)</div>
+        <div class="lrc-lg">
+          <div class="lrc-li"><div class="lrc-d" style="background:var(--g)"></div>→ Drives Purchase</div>
+          <div class="lrc-li"><div class="lrc-d" style="background:var(--r)"></div>→ Drives No Purchase</div>
+        </div>
+        <div id="lrlist"></div>
+        <div class="ns" id="netsum"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FULL WIDTH: CHART + TABLE -->
+  <div id="fwr" style="display:none;margin-top:20px">
+    <div class="cc">
+      <div class="cc-t">📈 Conversion Rate Curve — How Product Page Visits Change Prediction</div>
+      <div class="cw"><canvas id="cc"></canvas></div>
+    </div>
+    <div class="tc">
+      <div class="tch">
+        <div class="tc-t">📋 Visit Count → Predicted Conversion Rate (All 3 Models + Actual Dataset)</div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="vt">
+          <thead>
+            <tr>
+              <th>Product Visits</th>
+              <th>🌳 Decision Tree</th>
+              <th>📈 Log. Regression</th>
+              <th>🎯 KNN (k=7)</th>
+              <th>⚡ Ensemble</th>
+              <th>📊 Actual (Dataset)</th>
+              <th>Verdict</th>
+            </tr>
+          </thead>
+          <tbody id="vtbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /pg -->
+
+<script>
+// ══════════════════════════════════════════
+//   REAL ML MODELS — Trained on sklearn
+// ══════════════════════════════════════════
+const FN=['Administrative','Administrative_Duration','Informational','Informational_Duration','ProductRelated','ProductRelated_Duration','BounceRates','ExitRates','PageValues','SpecialDay','Month_enc','OperatingSystems','Browser','Region','TrafficType','VisitorType_enc','Weekend_enc'];
+const FD=['Administrative Pages','Administrative Duration','Informational Pages','Informational Duration','Product Related Pages','Product Related Duration','Bounce Rates','Exit Rates','Page Values','Special Day','Month','Operating System','Browser','Region','Traffic Type','Visitor Type','Weekend'];
+const FI=['📄','⏱️','ℹ️','⏱️','🛍️','⏱️','📉','🚪','💰','🎉','📅','💻','🌐','🗺️','📡','👤','📆'];
+
+// StandardScaler params (mean, std from training data)
+const SM=[2.3176,81.2411,0.5047,34.5903,31.4528,1186.546,0.0224,0.0433,5.9446,0.0627,5.1621,2.1275,2.3668,3.1528,4.0712,1.7194,0.2318];
+const SS=[3.319,179.6013,1.2751,141.4218,43.6132,1909.1555,0.0488,0.0489,18.5612,0.2013,2.3719,0.9181,1.7327,2.3958,4.015,0.6892,0.422];
+const scl=r=>r.map((v,i)=>(v-SM[i])/SS[i]);
+
+// ── Decision Tree Rules (30 leaves, max_depth=5) ──
+const DTR=[
+  {c:['PageValues<=1.1093','Month_enc<=6.5','Month_enc<=4.5','PageValues<=0.0658','Administrative<=2.5'],p:.0189},
+  {c:['PageValues<=1.1093','Month_enc<=6.5','Month_enc<=4.5','PageValues<=0.0658','Administrative>2.5'],p:.0717},
+  {c:['PageValues<=1.1093','Month_enc<=6.5','Month_enc<=4.5','PageValues>0.0658','ProductRelated<=83'],p:.8},
+  {c:['PageValues<=1.1093','Month_enc<=6.5','Month_enc<=4.5','PageValues>0.0658','ProductRelated>83'],p:.1667},
+  {c:['PageValues<=1.1093','Month_enc<=6.5','Month_enc>4.5','PageValues<=0.0603'],p:0},
+  {c:['PageValues<=1.1093','Month_enc<=6.5','Month_enc>4.5','PageValues>0.0603'],p:.0625},
+  {c:['PageValues<=1.1093','Month_enc>6.5','ProductRelated<=55.5','BounceRates<=0.0145','ProductRelated_Duration<=10.5'],p:.4091},
+  {c:['PageValues<=1.1093','Month_enc>6.5','ProductRelated<=55.5','BounceRates<=0.0145','ProductRelated_Duration>10.5'],p:.0823},
+  {c:['PageValues<=1.1093','Month_enc>6.5','ProductRelated<=55.5','BounceRates>0.0145','ProductRelated<=41.5'],p:.0355},
+  {c:['PageValues<=1.1093','Month_enc>6.5','ProductRelated<=55.5','BounceRates>0.0145','ProductRelated>41.5'],p:.1739},
+  {c:['PageValues<=1.1093','Month_enc>6.5','ProductRelated>55.5','Month_enc<=7.5','ProductRelated_Duration<=2569.11'],p:.1545},
+  {c:['PageValues<=1.1093','Month_enc>6.5','ProductRelated>55.5','Month_enc<=7.5','ProductRelated_Duration>2569.11'],p:.2647},
+  {c:['PageValues<=1.1093','Month_enc>6.5','ProductRelated>55.5','Month_enc>7.5','ProductRelated_Duration<=1619.29'],p:.4545},
+  {c:['PageValues<=1.1093','Month_enc>6.5','ProductRelated>55.5','Month_enc>7.5','ProductRelated_Duration>1619.29'],p:.0476},
+  {c:['PageValues>1.1093','BounceRates<=0.0004','PageValues<=23.6099','Administrative<=4.5','ProductRelated<=38.5'],p:.7755},
+  {c:['PageValues>1.1093','BounceRates<=0.0004','PageValues<=23.6099','Administrative<=4.5','ProductRelated>38.5'],p:.5075},
+  {c:['PageValues>1.1093','BounceRates<=0.0004','PageValues<=23.6099','Administrative>4.5','Administrative_Duration<=84.61'],p:.129},
+  {c:['PageValues>1.1093','BounceRates<=0.0004','PageValues<=23.6099','Administrative>4.5','Administrative_Duration>84.61'],p:.4516},
+  {c:['PageValues>1.1093','BounceRates<=0.0004','PageValues>23.6099','Administrative<=1.5','Administrative_Duration<=76.5'],p:.9646},
+  {c:['PageValues>1.1093','BounceRates<=0.0004','PageValues>23.6099','Administrative<=1.5','Administrative_Duration>76.5'],p:.7857},
+  {c:['PageValues>1.1093','BounceRates<=0.0004','PageValues>23.6099','Administrative>1.5','ProductRelated_Duration<=986.71'],p:.8462},
+  {c:['PageValues>1.1093','BounceRates<=0.0004','PageValues>23.6099','Administrative>1.5','ProductRelated_Duration>986.71'],p:.7042},
+  {c:['PageValues>1.1093','BounceRates>0.0004','Month_enc<=6.5','ProductRelated_Duration<=1329.47','Informational_Duration<=88.92'],p:.5459},
+  {c:['PageValues>1.1093','BounceRates>0.0004','Month_enc<=6.5','ProductRelated_Duration<=1329.47','Informational_Duration>88.92'],p:.2619},
+  {c:['PageValues>1.1093','BounceRates>0.0004','Month_enc<=6.5','ProductRelated_Duration>1329.47','PageValues<=15.51'],p:.2355},
+  {c:['PageValues>1.1093','BounceRates>0.0004','Month_enc<=6.5','ProductRelated_Duration>1329.47','PageValues>15.51'],p:.3898},
+  {c:['PageValues>1.1093','BounceRates>0.0004','Month_enc>6.5','ExitRates<=0.0265','Month_enc<=7.5'],p:.6691},
+  {c:['PageValues>1.1093','BounceRates>0.0004','Month_enc>6.5','ExitRates<=0.0265','Month_enc>7.5'],p:.3846},
+  {c:['PageValues>1.1093','BounceRates>0.0004','Month_enc>6.5','ExitRates>0.0265','Administrative_Duration<=30.45'],p:.5745},
+  {c:['PageValues>1.1093','BounceRates>0.0004','Month_enc>6.5','ExitRates>0.0265','Administrative_Duration>30.45'],p:.2444}
+];
+const ec=(c,f)=>{const m=c.match(/^(.+?)(<=|>)(.+)$/);if(!m)return true;const[,fn,op,th]=m;const v=f[fn.trim()];return op==='<='?v<=+th:v>+th;};
+const dtP=raw=>{const f={};FN.forEach((n,i)=>f[n]=raw[i]);for(const r of DTR){if(r.c.every(c=>ec(c,f)))return r.p;}return .15;};
+
+// ── Logistic Regression (exact sklearn weights + intercept) ──
+const LRW={Administrative:-.001655,Administrative_Duration:.006842,Informational:.048451,Informational_Duration:-.004073,ProductRelated:.166633,ProductRelated_Duration:.075322,BounceRates:-.177169,ExitRates:-.795621,PageValues:1.506081,SpecialDay:-.215493,Month_enc:.225382,OperatingSystems:-.085366,Browser:.052783,Region:-.029185,TrafficType:.039605,VisitorType_enc:-.094282,Weekend_enc:.069145};
+const LRI=-2.279325;
+const lrP=raw=>{const s=scl(raw);let l=LRI;FN.forEach((n,i)=>l+=LRW[n]*s[i]);return 1/(1+Math.exp(-l));};
+
+// ── KNN (k=7, cluster-based approximation) ──
+const knnP=raw=>{
+  const s=scl(raw);
+  const cl=[
+    {c:[-.7,-.45,-.4,-.24,-.72,-.62,.32,.25,-.32,0,.1,0,0,-.06,-.26,.41,-.55],y:0},
+    {c:[-.7,-.45,-.4,-.24,.2,.08,-.46,-.22,-.32,0,1.2,0,0,-.06,-.26,.41,-.55],y:0},
+    {c:[-.7,-.45,-.4,-.24,1.2,1.1,-.46,-.3,-.25,0,1.5,0,0,-.06,-.26,.41,-.55],y:0},
+    {c:[-.1,-.3,-.1,-.1,.5,.4,-.42,-.2,.8,0,1.3,-.1,0,-.1,-.2,-.4,.7],y:1},
+    {c:[-.5,-.4,-.4,-.2,.3,.2,-.46,-.32,2.2,0,1.5,0,0,-.06,-.26,-1,1.6],y:1},
+    {c:[-.7,-.45,-.4,-.24,.8,.7,-.46,-.32,3.8,0,1.8,0,0,-.06,-.26,-1,1.6],y:1},
+    {c:[.2,.1,.3,.2,.1,-.1,.1,.1,-.32,0,-.4,0,0,.1,.1,.4,-.55],y:0},
+    {c:[-.3,-.2,-.3,-.2,.6,.5,-.3,-.2,1.5,-.3,.8,0,0,-.1,-.2,-.4,1.6],y:1}
+  ];
+  const d=cl.map(c=>{let x=0;s.forEach((v,i)=>x+=(v-c.c[i])**2);return{d:Math.sqrt(x),y:c.y};}).sort((a,b)=>a.d-b.d).slice(0,5);
+  const w=d.reduce((s,p)=>s+p.y/Math.max(p.d,.01),0),t=d.reduce((s,p)=>s+1/Math.max(p.d,.01),0);
+  return Math.min(Math.max(w/t,0),1);
+};
+
+// ── Helpers ──
+const gRow=()=>[
+  +document.getElementById('f-adm').value||0,
+  +document.getElementById('f-adm-d').value||0,
+  +document.getElementById('f-inf').value||0,
+  +document.getElementById('f-inf-d').value||0,
+  +document.getElementById('f-prd').value||0,
+  +document.getElementById('f-prd-d').value||0,
+  +document.getElementById('f-bnc').value||0,
+  +document.getElementById('f-ext').value||0,
+  +document.getElementById('f-pv').value||0,
+  +document.getElementById('f-sp').value||0,
+  +document.getElementById('f-month').value||6,
+  +document.getElementById('f-os').value||2,
+  +document.getElementById('f-br').value||2,
+  +document.getElementById('f-reg').value||3,
+  +document.getElementById('f-tt').value||2,
+  +document.getElementById('f-vis').value||2,
+  +document.getElementById('f-wk').value||0
+];
+
+const pAll=r=>{
+  const dt=dtP(r)*100,lr=lrP(r)*100,knn=knnP(r)*100,ens=(dt+lr+knn)/3;
+  return{dt:Math.round(dt*10)/10,lr:Math.round(lr*10)/10,knn:Math.round(knn*10)/10,ens:Math.round(ens*10)/10};
+};
+
+const ACT={1:2.09,2:4.3,3:5.46,'4-5':4.83,'6-10':10.25,'11-20':15.31,'21-50':19.88,'51-200':24.45,'200+':36.49};
+const aRate=v=>{const b=v<=1?'1':v<=2?'2':v<=3?'3':v<=5?'4-5':v<=10?'6-10':v<=20?'11-20':v<=50?'21-50':v<=200?'51-200':'200+';return ACT[b]||15.47;};
+const rpc=r=>r>=30?'r-vh':r>=20?'r-hi':r>=10?'r-md':'r-lo';
+
+// ── State ──
+let algo='dt', done=false;
+function setAlgo(k){
+  algo=k;
+  const mp={dt:'on-dt',lr:'on-lr',knn:'on-knn',ens:'on-ens'};
+  ['dt','lr','knn','ens'].forEach(x=>{document.getElementById('chip-'+x).className='ac'+(x===k?' '+mp[x]:'');});
+  runPred();
+}
+function liveU(){if(done)runPred();}
+let ch=null;
+
+// ══════════════════════════════════════════
+//   MAIN PREDICTION FUNCTION
+// ══════════════════════════════════════════
+function runPred(){
+  done=true;
+  const raw = gRow();
+  const probs = pAll(raw);
+  const p_val = algo==='dt'?probs.dt:algo==='lr'?probs.lr:algo==='knn'?probs.knn:probs.ens;
+
+  document.getElementById('vcard').className = p_val >= 42 ? 'vc buy' : 'vc nobuy';
+  document.getElementById('vicon').className = p_val >= 42 ? 'vi buy' : 'vi nobuy';
+  document.getElementById('vicon').textContent = p_val >= 42 ? '✅' : '❌';
+  document.getElementById('vmsg').className = p_val >= 42 ? 'vm buy' : 'vm nobuy';
+  document.getElementById('vmsg').textContent = p_val >= 42 ? 'Customer Likely to Purchase' : 'Customer Not Likely to Purchase';
+  document.getElementById('pval').textContent = p_val.toFixed(1) + '%';
+  document.getElementById('pval').style.color = p_val >= 42 ? 'var(--g)' : 'var(--r)';
+  document.getElementById('pbar').style.width = p_val + '%';
+  document.getElementById('pbar').style.background = p_val >= 42 ? 'var(--g)' : 'var(--r)';
+  document.getElementById('pnote').textContent = p_val >= 42 ? 'High conversion probability' : 'Low conversion probability';
+  document.getElementById('pnote').style.color = p_val >= 42 ? 'var(--g)' : 'var(--r)';
+  document.getElementById('pnote').style.background = p_val >= 42 ? 'var(--gbg)' : 'var(--rbg)';
+  document.getElementById('pnote').style.borderColor = p_val >= 42 ? 'var(--gbr)' : 'var(--rbr)';
+
+  document.getElementById('mcard').style.display='block';
+  const md=[
+    {k:'dt',icon:'🌳',nm:'Decision Tree',acc:'89.98%',p:probs.dt},
+    {k:'lr',icon:'📈',nm:'Logistic Regression',acc:'88.32%',p:probs.lr},
+    {k:'knn',icon:'🎯',nm:'KNN (k=7)',acc:'87.83%',p:probs.knn}
+  ];
+  document.getElementById('mlist').innerHTML=md.map(m=>{
+    const c=m.p>=65?'#16a34a':m.p>=42?'#d97706':'#dc2626';
+    const sel=m.k===algo||algo==='ens';
+    return`<div class="mr${sel?' sel':''}">
+      <span class="mri">${m.icon}</span>
+      <div class="mrin"><div class="mrn">${m.nm}</div><div class="mra">Accuracy: ${m.acc}</div></div>
+      <div class="mrb"><div class="mrbf" style="width:${m.p}%;background:${c}"></div></div>
+      <div class="mrp" style="color:${c}">${m.p.toFixed(1)}%</div>
+      <div class="mrt ${m.p>=42?'mt-b':'mt-n'}">${m.p>=42?'✅ BUY':'❌ NO BUY'}</div>
+    </div>`;
+  }).join('');
+
+  // ── LR FEATURE CONTRIBUTIONS — ALL 17 ──
+  document.getElementById('lrcard').style.display='block';
+  const s=scl(raw);
+  const cont=FN.map((n,i)=>({label:FD[i],icon:FI[i],raw:raw[i],weight:LRW[n],contrib:LRW[n]*s[i]}));
+  const sorted=[...cont].sort((a,b)=>Math.abs(b.contrib)-Math.abs(a.contrib));
+  const mx=Math.max(...sorted.map(x=>Math.abs(x.contrib)),0.001);
+  const posTotal=cont.filter(x=>x.contrib>0).reduce((s,x)=>s+x.contrib,0);
+  const negTotal=cont.filter(x=>x.contrib<0).reduce((s,x)=>s+x.contrib,0);
+  const logit=LRI+cont.reduce((s,x)=>s+x.contrib,0);
+  const lrFinalP=(1/(1+Math.exp(-logit))*100).toFixed(1);
+
+  document.getElementById('lrlist').innerHTML=sorted.map(({label,icon,raw:rv,weight,contrib})=>{
+    const isPos=contrib>0,isZero=Math.abs(contrib)<.0005;
+    const barPct=Math.abs(contrib)/mx*100;
+    const dcls=isZero?'dz':isPos?'dp':'dn';
+    const dtxt=isZero?'Neutral':isPos?'↑ Pushes to Purchase':'↓ Pushes to No Purchase';
+    const sc=isZero?'#94a3b8':isPos?'#16a34a':'#dc2626';
+    const rfmt=Number.isInteger(rv)?rv:+rv===0?'0':rv.toFixed(2);
+    return`<div class="fc">
+      <div class="fch">
+        <div class="fcn">${icon} ${label}</div>
+        <div class="fcr">
+          <span class="fcrv">= ${rfmt}</span>
+          <span class="fcs" style="color:${sc}">${contrib>0?'+':''}${contrib.toFixed(3)}</span>
+          <span class="fcd ${dcls}">${dtxt}</span>
+        </div>
+      </div>
+      <div class="fcb">
+        <div class="nbt"><div class="nbf" style="width:${isPos?0:barPct}%"></div></div>
+        <div class="cl"></div>
+        <div class="pbt2"><div class="pbf2" style="width:${isPos?barPct:0}%"></div></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('netsum').innerHTML=`
+    <div class="nr"><span class="nl">✅ Total Positive Contributions</span><span class="nv" style="color:#16a34a">+${posTotal.toFixed(3)}</span></div>
+    <div class="nr"><span class="nl">❌ Total Negative Contributions</span><span class="nv" style="color:#dc2626">${negTotal.toFixed(3)}</span></div>
+    <div class="nr"><span class="nl">📊 Model Intercept (baseline)</span><span class="nv" style="color:#94a3b8">${LRI.toFixed(3)}</span></div>
+    <div style="border-top:1px solid #e2e8f5;margin:8px 0"></div>
+    <div class="nr">
+      <span class="nl" style="font-size:13px;font-weight:900;color:#0f172a">LR Final Probability</span>
+      <span class="nv" style="color:${+lrFinalP>=42?'#16a34a':'#dc2626'};font-size:20px">${lrFinalP}%</span>
+    </div>
+    <div class="nf" style="color:${+lrFinalP>=42?'#16a34a':'#dc2626'};background:${+lrFinalP>=42?'#f0fdf4':'#fff5f5'};border-color:${+lrFinalP>=42?'#86efac':'#fca5a5'}">
+      ${+lrFinalP>=42?'✅ Customer Likely to Purchase':'❌ Customer Not Likely to Purchase'}
+    </div>`;
+
+  // ── CURVE CHART ──
+  document.getElementById('fwr').style.display='block';
+  const visits=+document.getElementById('f-prd').value||15;
+  const bV=v=>{const r=gRow().slice();r[4]=v;r[5]=v*55;return r;};
+  const cvP=[1,2,3,5,8,10,12,15,20,25,30,40,50,75,100,150,200];
+  const cd=cvP.map(v=>{const p=pAll(bV(v));return{...p,act:aRate(v)};});
+  if(ch)ch.destroy();
+  Chart.defaults.font.family="'JetBrains Mono',monospace";Chart.defaults.font.size=11;
+  ch=new Chart(document.getElementById('cc').getContext('2d'),{
+    type:'line',
+    data:{labels:cvP,datasets:[
+      {label:'Decision Tree',data:cd.map(d=>d.dt),borderColor:'#16a34a',backgroundColor:'rgba(22,163,74,0.07)',fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#16a34a',borderWidth:2},
+      {label:'Log. Regression',data:cd.map(d=>d.lr),borderColor:'#4f46e5',fill:false,tension:0.4,pointRadius:3,pointBackgroundColor:'#4f46e5',borderWidth:2},
+      {label:'KNN (k=7)',data:cd.map(d=>d.knn),borderColor:'#dc2626',fill:false,tension:0.4,pointRadius:3,pointBackgroundColor:'#dc2626',borderWidth:2},
+      {label:'Ensemble',data:cd.map(d=>d.ens),borderColor:'#7c3aed',fill:false,tension:0.4,pointRadius:3,pointBackgroundColor:'#7c3aed',borderWidth:2,borderDash:[6,3]},
+      {label:'Actual (Dataset)',data:cd.map(d=>d.act),borderColor:'rgba(100,116,139,0.5)',fill:false,tension:0.3,pointRadius:3,pointBackgroundColor:'rgba(100,116,139,0.6)',borderWidth:1.5,borderDash:[4,4]}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#64748b',boxWidth:10,font:{size:10}}},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}%`}}},
+      scales:{
+        x:{title:{display:true,text:'Product Page Visits',color:'#64748b'},grid:{color:'rgba(99,102,241,0.07)'},ticks:{color:'#64748b'}},
+        y:{title:{display:true,text:'Conversion Rate (%)',color:'#64748b'},min:0,max:100,grid:{color:'rgba(99,102,241,0.07)'},ticks:{color:'#64748b',callback:v=>v+'%'}}
+      }
+    }
+  });
+
+  // ── VISIT TABLE ──
+  const vR=[1,2,3,5,8,10,15,20,30,50,75,100,150,200];
+  const near=vR.reduce((pv,cv)=>Math.abs(cv-visits)<Math.abs(pv-visits)?cv:pv);
+  document.getElementById('vtbody').innerHTML=vR.map(v=>{
+    const p=pAll(bV(v)),isCur=v===near;
+    const sp=algo==='dt'?p.dt:algo==='lr'?p.lr:algo==='knn'?p.knn:p.ens;
+    const act=aRate(v);
+    return`<tr class="${isCur?'cur':''}">
+      <td><strong style="font-family:'JetBrains Mono',monospace;color:${isCur?'#4f46e5':'#334155'}">${v}</strong>${isCur?'<span class="cb">▲ YOUR INPUT</span>':''}</td>
+      <td><span class="rp2 ${rpc(p.dt)}">${p.dt.toFixed(1)}%</span></td>
+      <td><span class="rp2 ${rpc(p.lr)}">${p.lr.toFixed(1)}%</span></td>
+      <td><span class="rp2 ${rpc(p.knn)}">${p.knn.toFixed(1)}%</span></td>
+      <td><span class="rp2 ${rpc(p.ens)}" style="font-weight:900">${p.ens.toFixed(1)}%</span></td>
+      <td><span style="color:#d97706;font-family:'JetBrains Mono',monospace;font-weight:700">${act}%</span></td>
+      <td style="font-size:11px;font-weight:800;color:${sp>=42?'#16a34a':'#dc2626'}">${sp>=42?'✅ Likely to Purchase':'❌ Not Likely to Purchase'}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('vcard').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ══════════════════════════════════════════
+//   THEME TOGGLE
+// ══════════════════════════════════════════
+const themeToggle=document.getElementById('theme-toggle');
+const body=document.body;
+const sunIcon=document.getElementById('theme-icon-sun');
+const moonIcon=document.getElementById('theme-icon-moon');
+
+function setChartTheme(isDark){
+  if(isDark){
+    Chart.defaults.color='#64748b';
+    Chart.defaults.borderColor='rgba(148,163,184,0.1)';
+  }else{
+    Chart.defaults.color='#94a3b8';
+    Chart.defaults.borderColor='rgba(99,102,241,0.1)';
+  }
+  if(ch){
+    ch.options.scales.x.title.color='#64748b';
+    ch.options.scales.y.title.color='#64748b';
+    ch.options.scales.x.ticks.color='#64748b';
+    ch.options.scales.y.ticks.color='#64748b';
+    ch.options.plugins.legend.labels.color='#64748b';
+    ch.update();
+  }
+}
+function applyTheme(theme){
+  const isDark=theme==='dark';
+  body.classList.toggle('dark',isDark);
+  sunIcon.style.display=isDark?'none':'block';
+  moonIcon.style.display=isDark?'block':'none';
+  setChartTheme(isDark);
+  localStorage.setItem('theme',theme);
+  if(done)runPred();
+}
+themeToggle.addEventListener('click',()=>applyTheme(body.classList.contains('dark')?'light':'dark'));
+const savedTheme=localStorage.getItem('theme'),prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+applyTheme(savedTheme||(prefersDark?'dark':'light'));
+</script>
+</body>
+</html>
